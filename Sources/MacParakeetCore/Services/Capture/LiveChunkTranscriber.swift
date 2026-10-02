@@ -226,6 +226,9 @@ actor LiveChunkTranscriber {
         // Session-owned cancellation still discards pending preview without emitting it.
         guard !Task.isCancelled, sessionContext?.id == sessionID else { return }
 
+        logger.info(
+            "meeting_live_chunk_cancelled source=\(source.rawValue, privacy: .public) seq=\(sequence)"
+        )
         let readyResults = chunkResultBuffer.receiveFailure(sequence: sequence, source: source)
         guard !readyResults.isEmpty else { return }
         let ordered = readyResults.map {
